@@ -1,1 +1,3 @@
-environments/development
+environments/development/build
+environments/development/contracts
+node_modules
