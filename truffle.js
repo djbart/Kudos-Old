@@ -4,6 +4,9 @@ module.exports = {
     "app.js": [
       "javascripts/app.js"
     ],
+    "blockies.js": [
+      "javascripts/blockies.js"
+    ],
     "app.css": [
       "stylesheets/app.css"
     ],

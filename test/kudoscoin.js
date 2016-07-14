@@ -1,29 +1,29 @@
-contract('MetaCoin', function(accounts) {
-  it("should put 10000 MetaCoin in the first account", function(done) {
-    var meta = MetaCoin.deployed();
+contract('KudosCoin', function(accounts) {
+  it("should put 10000 KudosCoin in the first account", function(done) {
+    var meta = KudosCoin.deployed();
 
     meta.getBalance.call(accounts[0]).then(function(balance) {
       assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
     }).then(done).catch(done);
   });
   it("should call a function that depends on a linked library  ", function(done){
-    var meta = MetaCoin.deployed();
-    var metaCoinBalance;
-    var metaCoinEthBalance;
+    var meta = KudosCoin.deployed();
+    var KudosCoinBalance;
+    var KudosCoinEthBalance;
 
     meta.getBalance.call(accounts[0]).then(function(outCoinBalance){
-      metaCoinBalance = outCoinBalance.toNumber();
+      KudosCoinBalance = outCoinBalance.toNumber();
       return meta.getBalanceInEth.call(accounts[0]);
     }).then(function(outCoinBalanceEth){
-      metaCoinEthBalance = outCoinBalanceEth.toNumber();
+      KudosCoinEthBalance = outCoinBalanceEth.toNumber();
       
     }).then(function(){
-      assert.equal(metaCoinEthBalance,2*metaCoinBalance,"Library function returned unexpeced function, linkage may be broken");
+      assert.equal(KudosCoinEthBalance,2*KudosCoinBalance,"Library function returned unexpeced function, linkage may be broken");
       
     }).then(done).catch(done);
   });
   it("should send coin correctly", function(done) {
-    var meta = MetaCoin.deployed();
+    var meta = KudosCoin.deployed();
 
     // Get initial balances of first and second account.
     var account_one = accounts[0];

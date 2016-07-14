@@ -5738,7 +5738,7 @@ var Pudding =
     abi: [{"constant":false,"inputs":[{"name":"amount","type":"uint256"},{"name":"conversionRate","type":"uint256"}],"name":"convert","outputs":[{"name":"convertedAmount","type":"uint256"}],"type":"function"}],
     binary: "606060405260358060106000396000f36503050000000050606060405260e060020a600035046396e4ee3d81146024575b6007565b602435600435026060908152602090f3",
     unlinked_binary: "606060405260358060106000396000f36503050000000050606060405260e060020a600035046396e4ee3d81146024575b6007565b602435600435026060908152602090f3",
-    address: "0xb8c313c24fc67f6248a7bdf3cafcdede9724f185",
+    address: "0xcc4ff0eca15b4c1809e266cc905a4ac0f7907742",
     generated_with: "2.0.9",
     contract_name: "ConvertLib"
   };
@@ -5803,9 +5803,9 @@ var Pudding =
 
   var contract_data = {
     abi: [{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getBalanceInEth","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"receiver","type":"address"},{"name":"amount","type":"uint256"}],"name":"sendCoin","outputs":[{"name":"sufficient","type":"bool"}],"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"inputs":[],"type":"constructor"}],
-    binary: "6060604052600160a060020a033216600090815260208190526040902061271090556101548061002f6000396000f3606060405260e060020a60003504637bd703e8811461003157806390b98a111461005c578063f8b2cb4f1461008b575b005b6100b1600435600073b8c313c24fc67f6248a7bdf3cafcdede9724f1856396e4ee3d6100d784610092565b6100c360043560243533600160a060020a03166000908152602081905260408120548290101561011c5761014e565b6100b16004355b600160a060020a0381166000908152602081905260409020545b919050565b60408051918252519081900360200190f35b604080519115158252519081900360200190f35b60026040518360e060020a02815260040180838152602001828152602001925050506020604051808303818660325a03f4156100025750506040515191506100ac9050565b5033600160a060020a039081166000908152602081905260408082208054859003905591841681522080548201905560015b9291505056",
+    binary: "6060604052600160a060020a033216600090815260208190526040902061271090556101548061002f6000396000f3606060405260e060020a60003504637bd703e8811461003157806390b98a111461005c578063f8b2cb4f1461008b575b005b6100b1600435600073cc4ff0eca15b4c1809e266cc905a4ac0f79077426396e4ee3d6100d784610092565b6100c360043560243533600160a060020a03166000908152602081905260408120548290101561011c5761014e565b6100b16004355b600160a060020a0381166000908152602081905260409020545b919050565b60408051918252519081900360200190f35b604080519115158252519081900360200190f35b60026040518360e060020a02815260040180838152602001828152602001925050506020604051808303818660325a03f4156100025750506040515191506100ac9050565b5033600160a060020a039081166000908152602081905260408082208054859003905591841681522080548201905560015b9291505056",
     unlinked_binary: "6060604052600160a060020a033216600090815260208190526040902061271090556101548061002f6000396000f3606060405260e060020a60003504637bd703e8811461003157806390b98a111461005c578063f8b2cb4f1461008b575b005b6100b1600435600073__ConvertLib____________________________6396e4ee3d6100d784610092565b6100c360043560243533600160a060020a03166000908152602081905260408120548290101561011c5761014e565b6100b16004355b600160a060020a0381166000908152602081905260409020545b919050565b60408051918252519081900360200190f35b604080519115158252519081900360200190f35b60026040518360e060020a02815260040180838152602001828152602001925050506020604051808303818660325a03f4156100025750506040515191506100ac9050565b5033600160a060020a039081166000908152602081905260408082208054859003905591841681522080548201905560015b9291505056",
-    address: "0xc8ca042733ba5307d35b558b178468346b0ac968",
+    address: "0x0ab27d4c948e31756e026b14840b8c648c704104",
     generated_with: "2.0.9",
     contract_name: "KudosCoin"
   };
@@ -5869,6 +5869,7 @@ var Pudding =
 var accounts;
 var account;
 var balance;
+var colleagueNames = ["Bart", "Steffie", "Stijn", "Thomas", "Wouter"];
 
 function setStatus(message) {
   var status = document.getElementById("status");
@@ -5878,6 +5879,31 @@ function setStatus(message) {
 function refreshBalance() {
   var meta = KudosCoin.deployed();
 
+  var colleagues = document.getElementById("colleagues");
+
+  var ul=document.createElement('ul');
+
+  colleagues.appendChild(ul);
+
+  for (var i=0; i<accounts.length; i++){
+
+      var li=document.createElement('li');
+      var blockie = blockies.create({ seed: accounts[i]});
+      var colleagueInfo = document.createElement("p");
+      var kudos = document.createElement("p");
+      colleagueInfo.innerHTML = colleagueNames[i] + " <small>(" + accounts[i] + ")</small>";
+      var currentAccount = accounts[i];
+      kudos.id = "Kudos" + currentAccount;
+
+      getBalance(meta, currentAccount);
+
+      ul.appendChild(li);
+      li.appendChild(blockie);
+      li.appendChild(colleagueInfo);
+      li.appendChild(kudos);
+      
+  }
+
   meta.getBalance.call(account, {from: account}).then(function(value) {
     var balance_element = document.getElementById("balance");
     balance_element.innerHTML = value.valueOf();
@@ -5885,6 +5911,15 @@ function refreshBalance() {
     console.log(e);
     setStatus("Error getting balance; see log.");
   });
+};
+
+function getBalance(meta, currentAccount) {
+  meta.getBalance.call(currentAccount, {from: currentAccount}).then(function(balance) {
+        var currentKudos = document.getElementById("Kudos" + currentAccount);
+        currentKudos.innerHTML = "Kudos: " + balance.toNumber();
+      }).catch(function(e) {
+        console.log(e);
+      })
 };
 
 function sendCoin() {
